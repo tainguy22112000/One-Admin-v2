@@ -16,13 +16,13 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { IconChevronDown } from '@tabler/icons-react'
 import { useStyles } from './index.style'
-import { mockdata } from '@/constants/data'
 import Logo from '@/assets/note-logo.png'
 import UserMenu from '../userMenu'
 import { LogoutButton } from '../button'
 import { menuItem } from '@/constants/menu'
 import { SubHeaderItem } from './subHeader'
 import MenuItem from './menuItem'
+import SearchField from '../searchField'
 
 const HeaderMenu = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false)
@@ -31,23 +31,15 @@ const HeaderMenu = () => {
 
   return (
     <Box>
-      <Header height={60} px='md'>
+      <Header height={60} px={40}>
         <Group position='apart' sx={{ height: '100%' }}>
-          <Image src={Logo} width={140} />
-
-          <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
-            {menuItem.map((item) => (
-              <MenuItem {...item} key={item.id} />
-            ))}
-          </Group>
-
+          <SearchField />
           <UserMenu />
-
           <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
         </Group>
       </Header>
 
-      <Drawer
+      {/* <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
         size='100%'
@@ -85,7 +77,7 @@ const HeaderMenu = () => {
 
           <LogoutButton color='red' fullWidth />
         </ScrollArea>
-      </Drawer>
+      </Drawer> */}
     </Box>
   )
 }
