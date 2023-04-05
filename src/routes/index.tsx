@@ -7,7 +7,12 @@ import AuthLayout from '@/layout/authLayout'
 import RegisterPage from '@/pages/register'
 import RegisterLayout from '@/layout/registerLayout'
 import { MarketAnalytic, ProductAnalytic } from '@/pages/overview'
-import UsersList from '@/pages/users/listUsers'
+import UsersList from '@/pages/users/customerList'
+import UserContextProvider from '@/context/CustomerContext/CustomerContext'
+import { MEMBERSHIP } from '@/types/user'
+import OrderList from '@/pages/order/orderList'
+import AddCustomerPage from '@/pages/users/addCustomer'
+import { ProductCreateNewForm, ProductJuiceGrid } from '@/pages/products'
 
 export const router = createBrowserRouter([
   {
@@ -55,23 +60,39 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '/users/list',
-                element: <UsersList />
+                element: (
+                  <UserContextProvider>
+                    <UsersList membership='all' />
+                  </UserContextProvider>
+                )
               },
               {
                 path: '/users/silver',
-                element: <MarketAnalytic />
+                element: (
+                  <UserContextProvider>
+                    <UsersList membership={MEMBERSHIP.SILVER} />
+                  </UserContextProvider>
+                )
               },
               {
                 path: '/users/gold',
-                element: <MarketAnalytic />
+                element: (
+                  <UserContextProvider>
+                    <UsersList membership={MEMBERSHIP.GOLD} />
+                  </UserContextProvider>
+                )
               },
               {
                 path: '/users/ruby',
-                element: <MarketAnalytic />
+                element: (
+                  <UserContextProvider>
+                    <UsersList membership={MEMBERSHIP.RUBY} />
+                  </UserContextProvider>
+                )
               },
               {
                 path: '/users/register',
-                element: <MarketAnalytic />
+                element: <AddCustomerPage />
               }
             ]
           },
@@ -80,27 +101,27 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '/orders/all',
-                element: <MarketAnalytic />
+                element: <OrderList title='Tất cả đơn hàng' />
               },
               {
                 path: '/orders/waiting',
-                element: <ProductAnalytic />
+                element: <OrderList title='Chờ thanh toán' />
               },
               {
                 path: '/orders/processing',
-                element: <ProductAnalytic />
+                element: <OrderList title='Đang thực hiện' />
               },
               {
                 path: '/orders/delivering',
-                element: <ProductAnalytic />
+                element: <OrderList title='Đang giao' />
               },
               {
                 path: '/orders/done',
-                element: <ProductAnalytic />
+                element: <OrderList title='Đã hoàn tất' />
               },
               {
                 path: '/orders/cancel',
-                element: <ProductAnalytic />
+                element: <OrderList title='Đã hủy' />
               }
             ]
           },
@@ -113,7 +134,13 @@ export const router = createBrowserRouter([
               },
               {
                 path: '/products/juice',
-                element: <ProductAnalytic />
+                element: <ProductJuiceGrid />,
+                children: [
+                  {
+                    path: '/products/juice/new',
+                    element: <ProductCreateNewForm />
+                  }
+                ]
               },
               {
                 path: '/products/smoothy',
