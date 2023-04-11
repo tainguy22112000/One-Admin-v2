@@ -1,46 +1,18 @@
 import CardItem from '@/components/card'
 import { Grid } from '@mantine/core'
 
-const data = [
-  {
-    title1: 'Giao dịch trong (tháng này)',
-    content1: '1000',
-    title2: 'Giao dịch trong (tháng này)',
-    content2: '200'
-  },
-  {
-    title1: 'Giao dịch trong (tháng này)',
-    content1: '1000',
-    title2: 'Giao dịch trong (tháng này)',
-    content2: '200'
-  },
-  {
-    title1: 'Giao dịch trong (tháng này)',
-    content1: '1000',
-    title2: 'Giao dịch trong (tháng này)',
-    content2: '200'
-  },
-  {
-    title1: 'Giao dịch trong (tháng này)',
-    content1: '1000',
-    title2: 'Giao dịch trong (tháng này)',
-    content2: '200'
-  },
-  {
-    title1: 'Giao dịch trong (tháng này)',
-    content1: '1000',
-    title2: 'Giao dịch trong (tháng này)',
-    content2: '200'
-  },
-  {
-    title1: 'Giao dịch trong (tháng này)',
-    content1: '1000',
-    title2: 'Giao dịch trong (tháng này)',
-    content2: '200'
-  }
-]
+export interface ICardProps {
+  title1: string
+  content1: string | React.ReactNode
+  title2: string
+  content2: string | React.ReactNode
+}
 
-export const GridCard = () => {
+export interface IGridCardProps {
+  data: ICardProps[]
+}
+
+export const GridCard = ({ data }: IGridCardProps) => {
   return (
     <Grid grow gutter={19}>
       {data.map((content, index) => (

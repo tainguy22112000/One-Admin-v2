@@ -7,7 +7,14 @@ import AuthLayout from '@/layout/authLayout'
 import RegisterPage from '@/pages/register'
 import RegisterLayout from '@/layout/registerLayout'
 import { MarketAnalytic, ProductAnalytic } from '@/pages/overview'
-import UsersList from '@/pages/users/listUsers'
+import ListCustomer from '@/pages/users/features/listCustomer'
+import UserContextProvider from '@/context/CustomerContext/CustomerContext'
+import { MEMBERSHIP } from '@/types/user'
+import OrderList from '@/pages/order/features/orderList'
+import AddCustomer from '@/pages/users/features/addCustomer'
+import { ProductCreateNew, ProductJuiceGrid } from '@/pages/products'
+import { ORDER_STATUS } from '@/types/order'
+import OrderContextProvider from '@/context/OrderContext/OrderContext'
 
 export const router = createBrowserRouter([
   {
@@ -55,23 +62,39 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '/users/list',
-                element: <UsersList />
+                element: (
+                  <UserContextProvider>
+                    <ListCustomer membership='all' />
+                  </UserContextProvider>
+                )
               },
               {
                 path: '/users/silver',
-                element: <MarketAnalytic />
+                element: (
+                  <UserContextProvider>
+                    <ListCustomer membership={MEMBERSHIP.SILVER} />
+                  </UserContextProvider>
+                )
               },
               {
                 path: '/users/gold',
-                element: <MarketAnalytic />
+                element: (
+                  <UserContextProvider>
+                    <ListCustomer membership={MEMBERSHIP.GOLD} />
+                  </UserContextProvider>
+                )
               },
               {
                 path: '/users/ruby',
-                element: <MarketAnalytic />
+                element: (
+                  <UserContextProvider>
+                    <ListCustomer membership={MEMBERSHIP.RUBY} />
+                  </UserContextProvider>
+                )
               },
               {
                 path: '/users/register',
-                element: <MarketAnalytic />
+                element: <AddCustomer />
               }
             ]
           },
@@ -80,27 +103,51 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '/orders/all',
-                element: <MarketAnalytic />
+                element: (
+                  <OrderContextProvider>
+                    <OrderList title='Tất cả đơn hàng' query='all' />
+                  </OrderContextProvider>
+                )
               },
               {
                 path: '/orders/waiting',
-                element: <ProductAnalytic />
+                element: (
+                  <OrderContextProvider>
+                    <OrderList title='Chờ thanh toán' query={ORDER_STATUS.PAYMENTING} />
+                  </OrderContextProvider>
+                )
               },
               {
                 path: '/orders/processing',
-                element: <ProductAnalytic />
+                element: (
+                  <OrderContextProvider>
+                    <OrderList title='Đang thực hiện' query={ORDER_STATUS.PREPARING} />
+                  </OrderContextProvider>
+                )
               },
               {
                 path: '/orders/delivering',
-                element: <ProductAnalytic />
+                element: (
+                  <OrderContextProvider>
+                    <OrderList title='Đang giao' query={ORDER_STATUS.SHIPPING} />
+                  </OrderContextProvider>
+                )
               },
               {
                 path: '/orders/done',
-                element: <ProductAnalytic />
+                element: (
+                  <OrderContextProvider>
+                    <OrderList title='Đã hoàn tất' query={ORDER_STATUS.PAID} />
+                  </OrderContextProvider>
+                )
               },
               {
                 path: '/orders/cancel',
-                element: <ProductAnalytic />
+                element: (
+                  <OrderContextProvider>
+                    <OrderList title='Đã hủy' query={ORDER_STATUS.CANCEL} />
+                  </OrderContextProvider>
+                )
               }
             ]
           },
@@ -113,7 +160,15 @@ export const router = createBrowserRouter([
               },
               {
                 path: '/products/juice',
-                element: <ProductAnalytic />
+                element: <ProductJuiceGrid />
+              },
+              {
+                path: '/products/juice/juice-glass/create-new',
+                element: <ProductCreateNew />
+              },
+              {
+                path: '/products/juice/juice-bottled/create-new',
+                element: <ProductCreateNew />
               },
               {
                 path: '/products/smoothy',
