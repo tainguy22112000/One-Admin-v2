@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { getAuth, User, UserInfo } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,14 +18,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate()
   const auth = getAuth()
 
-  const value = {
-    user,
-    setUser
-  }
+  const value = useMemo(() => ({ user, setUser }), [user])
 
   useEffect(() => {
     const unsubcribed = auth.onAuthStateChanged((user: any) => {
-      console.log('user', user)
       if (user?.uid) {
         setUser(user)
         localStorage.setItem('accessToken', user.accessToken)

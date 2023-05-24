@@ -1,46 +1,63 @@
-import { Navbar, Group, ScrollArea, createStyles, ActionIcon } from '@mantine/core'
+import { Navbar, Group, ScrollArea, ActionIcon, Box, Center, Accordion } from '@mantine/core'
 import LinksGroup from './LinkGroup.tsx'
-import { OneLogo } from '@/assets/icon'
-import { CloseButton } from '@/assets/icon'
+import { OneLogo, HiddenIcon } from '@/assets/icon'
 import { navConfig } from '@/configs/navConfig'
-
-const useStyles = createStyles((theme) => ({
-  navbar: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    paddingBottom: 0,
-    boxShadow: '1px 0px 10px #ccc'
-  },
-
-  links: {
-    marginLeft: `calc(${theme.spacing.md} * -1)`,
-    marginRight: `calc(${theme.spacing.md} * -1)`
-  },
-
-  linksInner: {
-    paddingTop: theme.spacing.xl,
-    paddingBottom: theme.spacing.xl
-  }
-}))
+import { IconChevronRight } from '@tabler/icons-react'
+import { useState } from 'react'
+import { useStyles } from './index.style.js'
 
 const NavbarHeader = () => {
   const { classes } = useStyles()
-  const links = navConfig.map((item) => <LinksGroup {...item} key={item.label} />)
+  const [selected, setSelected] = useState<string>('')
+  const [tab, setTab] = useState<string>('')
+  const [hiddenNav, setHiddenNav] = useState<boolean>(false)
+  const links = navConfig.map((item: any) => (
+    <LinksGroup {...item} key={item.label} selected={selected} setSelected={setSelected} tab={tab} setTab={setTab} />
+  ))
 
   return (
-    <Navbar height='100vh' width={{ sm: 240 }} p='md' className={classes.navbar}>
-      <Navbar.Section mt={16} mx={20}>
-        <Group position='apart'>
-          <OneLogo />
-          <ActionIcon>
-            <CloseButton />
-          </ActionIcon>
-        </Group>
-      </Navbar.Section>
+    <>
+      {!hiddenNav ? (
+        <Navbar height='100vh' width={{ sm: 240 }} p='md' className={classes.navbar} hidden>
+          <Navbar.Section mt={16} mx={20}>
+            <Group position='apart'>
+              <OneLogo />
+              <ActionIcon onClick={() => setHiddenNav(!hiddenNav)}>
+                <HiddenIcon />
+              </ActionIcon>
+            </Group>
+          </Navbar.Section>
 
-      <Navbar.Section grow className={classes.links} component={ScrollArea}>
-        <div className={classes.linksInner}>{links}</div>
-      </Navbar.Section>
-    </Navbar>
+          <Navbar.Section grow className={classes.links} component={ScrollArea}>
+            <Accordion
+              chevronPosition='right'
+              defaultValue='Tổng quan'
+              variant='default'
+              transitionDuration={300}
+              styles={(theme) => ({
+                content: { padding: 0 },
+                control: {
+                  backgroundColor: theme.white
+                },
+                item: {
+                  padding: 0
+                }
+              })}
+            >
+              <div className={classes.linksInner}>{links}</div>
+            </Accordion>
+          </Navbar.Section>
+        </Navbar>
+      ) : (
+        <Box className={classes.icon}>
+          <Center>
+            <ActionIcon onClick={() => setHiddenNav(!hiddenNav)}>
+              <IconChevronRight />
+            </ActionIcon>
+          </Center>
+        </Box>
+      )}
+    </>
   )
 }
 

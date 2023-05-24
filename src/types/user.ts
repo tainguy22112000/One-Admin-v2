@@ -5,13 +5,40 @@ export enum MEMBERSHIP {
 }
 
 export interface UserProps {
-  id: string
+  fireBaseId: string
   avatar: string
   firstName: string
   lastName: string
   email: string
-  phone: string
+  txtPhone: string
   gender: string
-  dob: string
+  address: string
+  addressName: string
+  floor: string
+  note: string
+  dob: {
+    seconds: number
+    nanoseconds: number
+  }
   member: MEMBERSHIP
+  usedCoupon: string[]
+  usedGift: string[]
+}
+
+export interface SortUserProps {
+  firstName: string
+  lastName: string
+  email: string
+  txtPhone: string
+  gender: string
+}
+
+export interface UserListHeaderProps {
+  header: {
+    id: keyof UserProps | ''
+    title: string
+    width: string
+    value: keyof SortUserProps
+    position?: 'left' | 'center' | 'right'
+  }[]
 }

@@ -1,17 +1,11 @@
+import { ICardProps } from '@/pages/overview/components'
 import { Paper, Stack, Text } from '@mantine/core'
 
-interface ICardItemProps {
-  title1: string
-  content1: string
-  title2: string
-  content2: string
-}
-
-const CardItem = (content: ICardItemProps) => {
+const CardItem = (content: ICardProps) => {
   const { title1, title2, content1, content2 } = content
 
   return (
-    <Paper p={40} radius={10} shadow='md' width={354}>
+    <Paper p={40} radius={10} shadow='md'>
       <Stack spacing={15}>
         <Stack spacing={10}>
           <Text size='sm'>{title1}</Text>
